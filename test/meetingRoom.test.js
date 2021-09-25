@@ -1,4 +1,4 @@
-const MeetingRoomIsAlreadyBookedError = require("../src/error/meetingRoomIsAlreadyBookedError");
+const {MeetingRoomIsAlreadyBookedError} = require("../src/error/index");
 const MeetingRoom = require("../src/meetingRoom");
 const TimeSlot = require("../src/timeSlot");
 

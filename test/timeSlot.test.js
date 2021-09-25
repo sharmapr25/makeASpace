@@ -14,7 +14,7 @@ describe('create', () => {
   })
 
   it("should throw invalid input error when start time is greater than end time", () => {
-    const error = () => TimeSlot.create("24:00", "01:00");
+    const error = () => TimeSlot.create("23:00", "01:00");
 
     expect(error).toThrow(InvalidTimeSlotInputError);
   });

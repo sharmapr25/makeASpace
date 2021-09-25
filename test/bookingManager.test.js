@@ -1,7 +1,7 @@
 const BookingManager = require("../src/bookingManager");
 const TimeSlot = require("../src/timeSlot");
 const MeetingRoom = require('../src/meetingRoom');
-const NoMeetingRoomAvailableError = require("../src/error/noMeetingRoomAvailableError");
+const {NoMeetingRoomAvailableError} = require("../src/error/index");
 
 describe('getAllAvailableMeetingRooms', () => {
   it('should return empty when there are no room for booking', () => {

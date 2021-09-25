@@ -1,4 +1,4 @@
-const InvalidTimeSlotInputError = require('./error/invalidTimeSlotInputError');
+const {InvalidTimeSlotInputError} = require('./error/index');
 const Time = require('./time');
 
 class TimeSlot {

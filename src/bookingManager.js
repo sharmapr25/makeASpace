@@ -1,4 +1,4 @@
-const NoMeetingRoomAvailableError = require("./error/noMeetingRoomAvailableError");
+const {NoMeetingRoomAvailableError} = require("./error/index");
 
 class BookingManager {
   constructor(meetingRooms = [], cleaningRoomTimeSlots = []) {

@@ -1,10 +1,14 @@
-const MeetingRoomIsAlreadyBookedError = require("./error/meetingRoomIsAlreadyBookedError");
+const {MeetingRoomIsAlreadyBookedError} = require("./error/index");
 
 class MeetingRoom {
   constructor(name, capacity) {
     this._name = name;
     this._capacity = capacity;
     this._bookedSlots = [];
+  }
+
+  get name(){
+    return this._name;
   }
 
   book(timeSlot) {
