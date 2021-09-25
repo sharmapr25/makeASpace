@@ -15,9 +15,7 @@ class MeetingRoom {
   }
 
   isAvailableFor(timeSlot) {
-    return !this._bookedSlots.find((bookedSlot) =>
-      bookedSlot.isOverlappingWith(timeSlot)
-    );
+    return !this._bookedSlots.find(bookedSlot => bookedSlot.isOverlappingWith(timeSlot));
   }
 
   hasCapacityOf(headsCount) {

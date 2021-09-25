@@ -31,6 +31,7 @@ class TimeSlot {
   static create(startInput, endInput) {
     const startTime = Time.create(startInput);
     const endTime = Time.create(endInput);
+
     if (startTime.isGreaterThan(endTime)) {
       throw new InvalidTimeSlotInputError();
     }
