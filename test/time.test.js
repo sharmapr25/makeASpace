@@ -87,3 +87,17 @@ describe('isSame', () => {
   });
 
 });
+
+describe("isInFifteenMinutesInterval", () => {
+  it('should return true when given time is in fifteenMinutesInterval', () => {
+    const time = Time.create("14:00");
+
+    expect(time.isInFifteenMinutesInterval()).toBeTruthy();
+  });
+
+  it("should return false when given time is not in fifteenMinutesInterval", () => {
+    const time = Time.create("14:55");
+
+    expect(time.isInFifteenMinutesInterval()).toBeFalsy();
+  });
+});

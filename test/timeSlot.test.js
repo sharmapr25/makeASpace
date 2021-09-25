@@ -18,6 +18,12 @@ describe('create', () => {
 
     expect(error).toThrow(InvalidTimeSlotInputError);
   });
+
+  it("should throw invalid input error when start time is not in fifteen minutes interval ", () => {
+    const error = () => TimeSlot.create("12:55", "14:00");
+
+    expect(error).toThrow(InvalidTimeSlotInputError);
+  });
 });
 
 describe('isOverlappingWith', () => {

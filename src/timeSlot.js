@@ -32,7 +32,7 @@ class TimeSlot {
     const startTime = Time.create(startInput);
     const endTime = Time.create(endInput);
 
-    if (startTime.isGreaterThan(endTime)) {
+    if (startTime.isGreaterThan(endTime) || !startTime.isInFifteenMinutesInterval()) {
       throw new InvalidTimeSlotInputError();
     }
     return new TimeSlot(startTime, endTime);
