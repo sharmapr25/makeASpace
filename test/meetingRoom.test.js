@@ -1,23 +1,24 @@
-const {MeetingRoomIsAlreadyBookedError} = require("../src/error/index");
+const assert = require("assert");
+const assertError = require("./lib/errorAssertion");
+const { MeetingRoomIsAlreadyBookedError } = require("../src/error/index");
 const MeetingRoom = require("../src/meetingRoom");
 const TimeSlot = require("../src/timeSlot");
 
-describe('isAvailableFor', () => {
-  it('should return true when given room is available for given timeslot', ()=> {
-    const caveRoom = new MeetingRoom('C-Cave', 2);
+describe("isAvailableFor", () => {
+  it("should return true when given room is available for given timeslot", () => {
+    const caveRoom = new MeetingRoom("C-Cave", 2);
     const timeSlot = TimeSlot.create("10:00", "12:00");
 
-    expect(caveRoom.isAvailableFor(timeSlot)).toBeTruthy();
-  })
+    assert.ok(caveRoom.isAvailableFor(timeSlot));
+  });
 
   it("should return false when given room is already book for given timeslot", () => {
     const caveRoom = new MeetingRoom("C-Cave", 2);
     const timeSlot = TimeSlot.create("10:00", "12:00");
     caveRoom.book(timeSlot);
 
-    expect(caveRoom.isAvailableFor(timeSlot)).toBeFalsy();
-
-   });
+    assert.ok(!caveRoom.isAvailableFor(timeSlot))
+  });
 
   it("should return false when given room is book for different time slot and it is overlapping with given time slot", () => {
     const caveRoom = new MeetingRoom("C-Cave", 2);
@@ -26,7 +27,7 @@ describe('isAvailableFor', () => {
 
     const tenHoursToTweleveHours = TimeSlot.create("10:00", "12:00");
 
-    expect(caveRoom.isAvailableFor(tenHoursToTweleveHours)).toBeFalsy();
+    assert.ok(!caveRoom.isAvailableFor(tenHoursToTweleveHours))
   });
 
   it("should return true when given room is book for different time slot and it is not overlapping with given time slot", () => {
@@ -36,20 +37,20 @@ describe('isAvailableFor', () => {
 
     const tenHoursToTweleveHours = TimeSlot.create("10:00", "12:00");
 
-    expect(caveRoom.isAvailableFor(tenHoursToTweleveHours)).toBeTruthy();
- });
+    assert.ok(caveRoom.isAvailableFor(tenHoursToTweleveHours));
+  });
 });
 
-describe('book', () => {
-  it('should book room when it is available for given time slot', () => {
+describe("book", () => {
+  it("should book room when it is available for given time slot", () => {
     const caveRoom = new MeetingRoom("C-Cave", 2);
     const timeSlot = TimeSlot.create("9:00", "10:00");
 
-    expect(caveRoom.isAvailableFor(timeSlot)).toBeTruthy();
+    assert.ok(caveRoom.isAvailableFor(timeSlot));
 
     caveRoom.book(timeSlot);
 
-    expect(caveRoom.isAvailableFor(timeSlot)).toBeFalsy();
+    assert.ok(!caveRoom.isAvailableFor(timeSlot))
   });
 
   it("should throw meeting room is already book error when room is already booked for given time slot", () => {
@@ -59,43 +60,44 @@ describe('book', () => {
 
     const nineHoursThirtyMinutesToTenHours = TimeSlot.create("9:30", "10:00");
 
-    expect(() => caveRoom.book(nineHoursThirtyMinutesToTenHours)).toThrow(MeetingRoomIsAlreadyBookedError);
+    assertError(
+      () => caveRoom.book(nineHoursThirtyMinutesToTenHours), MeetingRoomIsAlreadyBookedError
+    );
   });
-
 });
 
-describe('hasCapacity', () => {
-  it('should return true when given heads count is same as room capacity', () => {
+describe("hasCapacity", () => {
+  it("should return true when given heads count is same as room capacity", () => {
     const caveRoom = new MeetingRoom("C-Cave", 2);
 
-    expect(caveRoom.hasCapacityOf(2)).toBeTruthy();
+    assert.ok(caveRoom.hasCapacityOf(2));
   });
 
   it("should return true when given heads count is less than room capacity", () => {
     const caveRoom = new MeetingRoom("C-Cave", 2);
 
-    expect(caveRoom.hasCapacityOf(1)).toBeTruthy();
+    assert.ok(caveRoom.hasCapacityOf(1));
   });
 
   it("should return false when given heads count is more than room capacity", () => {
     const caveRoom = new MeetingRoom("C-Cave", 2);
 
-    expect(caveRoom.hasCapacityOf(4)).toBeFalsy();
+    assert.ok(!caveRoom.hasCapacityOf(4))
   });
 });
 
 describe("getCapacityDifference", () => {
-  it('should return 5 when there are space differecne between give two rooms', () => {
+  it("should return 5 when there are space differecne between give two rooms", () => {
     const caveRoom = new MeetingRoom("C-Cave", 2);
     const towerRoom = new MeetingRoom("D-Tower", 7);
 
-    expect(towerRoom.getCapacityDifference(caveRoom)).toBe(5);
+    assert.equal(towerRoom.getCapacityDifference(caveRoom), 5);
   });
 
   it("should return 0 when there are no space differecne between give two rooms", () => {
     const caveRoom = new MeetingRoom("C-Cave", 2);
     const anotherCaveRoom = new MeetingRoom("D-Cave", 2);
 
-    expect(caveRoom.getCapacityDifference(anotherCaveRoom)).toBe(0);
+    assert.equal(caveRoom.getCapacityDifference(anotherCaveRoom), 0);
   });
 });

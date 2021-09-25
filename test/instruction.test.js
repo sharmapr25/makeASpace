@@ -1,12 +1,17 @@
+const assert = require("assert");
 const createInstruction = require("../src/instruction");
 const BookingManager = require("../src/bookingManager");
 const MeetingRoom = require("../src/meetingRoom");
-const TimeSlot = require("../src/timeSlot");
-const { InvalidTimeSlotInputError, NoMeetingRoomAvailableError, InvalidTimeInputError, InvalidInstructionError} = require("../src/error/index");
+const {
+  InvalidTimeSlotInputError,
+  NoMeetingRoomAvailableError,
+  InvalidTimeInputError,
+  InvalidInstructionError,
+} = require("../src/error/index");
 
-describe('createInstruction', () => {
-  it('should throw invalid instruction when given instruction is invalid', () => {
-    expect(() => createInstruction('Hello')).toThrow(InvalidInstructionError);
+describe("createInstruction", () => {
+  it("should throw invalid instruction when given instruction is invalid", () => {
+    assert.throws(() => createInstruction("Hello"), InvalidInstructionError);
   });
 });
 
@@ -20,7 +25,7 @@ describe("GetAllVacantRoomsInstruction", () => {
 
     const message = instruction.execute(bookingManager);
 
-    expect(message).toBe(expectedMessage);
+    assert.equal(message, expectedMessage);
   });
 
   it("should throw NoMeetingRoomAvailableError when there no room available", () => {
@@ -28,8 +33,7 @@ describe("GetAllVacantRoomsInstruction", () => {
     const instruction = createInstruction("VACANCY 10:00 12:00");
 
     const error = () => instruction.execute(bookingManager);
-    expect(error).toThrow(NoMeetingRoomAvailableError);
-    expect(error).toThrow("NO_VACANT_ROOM");
+    assert.throws(error, NoMeetingRoomAvailableError, "NO_VACANT_ROOM");
   });
 
   it("should throw InvalidTimeSlotInputError when given time slot has range between two days", () => {
@@ -38,8 +42,7 @@ describe("GetAllVacantRoomsInstruction", () => {
 
     const error = () => instruction.execute(bookingManager);
 
-    expect(error).toThrow(InvalidTimeSlotInputError);
-    expect(error).toThrow("INCORRECT_INPUT");
+    assert.throws(error, InvalidTimeSlotInputError, "INCORRECT_INPUT");
   });
 
   it("should throw InvalidTimeInputError when given time slot end date has more than 24 hr", () => {
@@ -48,13 +51,12 @@ describe("GetAllVacantRoomsInstruction", () => {
 
     const error = () => instruction.execute(bookingManager);
 
-    expect(error).toThrow(InvalidTimeInputError);
-    expect(error).toThrow("INCORRECT_INPUT");
+    assert.throws(error, InvalidTimeInputError, "INCORRECT_INPUT");
   });
 });
 
-describe('bookARoomInstruction', () => {
-  it('should return C-Cave as booked room when it is available for given time slot ', () => {
+describe("bookARoomInstruction", () => {
+  it("should return C-Cave as booked room when it is available for given time slot ", () => {
     const caveRoom = new MeetingRoom("C-Cave", 3);
     const bookingManager = new BookingManager([caveRoom]);
     const instruction = createInstruction("BOOK 10:00 12:00 2");
@@ -62,29 +64,26 @@ describe('bookARoomInstruction', () => {
 
     const message = instruction.execute(bookingManager);
 
-    expect(message).toBe(expectedMessage);
+    assert.equal(message, expectedMessage);
   });
 
+  it("should throw NoMeetingRoomAvailableError when there is no capacity given with instruction", () => {
+    const caveRoom = new MeetingRoom("C-Cave", 3);
+    const bookingManager = new BookingManager([caveRoom]);
+    const instruction = createInstruction("BOOK 10:00 12:00");
 
- it("should throw NoMeetingRoomAvailableError when there is no capacity given with instruction", () => {
-   const caveRoom = new MeetingRoom("C-Cave", 3);
-   const bookingManager = new BookingManager([caveRoom]);
-   const instruction = createInstruction("BOOK 10:00 12:00");
+    const error = () => instruction.execute(bookingManager);
 
-   const error = () => instruction.execute(bookingManager);
+    assert.throws(error, NoMeetingRoomAvailableError, "NO_VACANT_ROOM");
+  });
 
-   expect(error).toThrow(NoMeetingRoomAvailableError);
-   expect(error).toThrow("NO_VACANT_ROOM");
- });
+  it("should throw NoMeetingRoomAvailableError when there is no room available for given heads count", () => {
+    const caveRoom = new MeetingRoom("C-Cave", 3);
+    const bookingManager = new BookingManager([caveRoom]);
+    const instruction = createInstruction("BOOK 10:00 12:00 4");
 
- it("should throw NoMeetingRoomAvailableError when there is no room available for given heads count", () => {
-   const caveRoom = new MeetingRoom("C-Cave", 3);
-   const bookingManager = new BookingManager([caveRoom]);
-   const instruction = createInstruction("BOOK 10:00 12:00 4");
+    const error = () => instruction.execute(bookingManager);
 
-   const error = () => instruction.execute(bookingManager);
-
-   expect(error).toThrow(NoMeetingRoomAvailableError);
-   expect(error).toThrow("NO_VACANT_ROOM");
- });
+    assert.throws(error, NoMeetingRoomAvailableError, "NO_VACANT_ROOM");
+  });
 });

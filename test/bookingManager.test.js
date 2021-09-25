@@ -1,7 +1,9 @@
+const assert = require('assert');
 const BookingManager = require("../src/bookingManager");
 const TimeSlot = require("../src/timeSlot");
 const MeetingRoom = require('../src/meetingRoom');
 const {NoMeetingRoomAvailableError} = require("../src/error/index");
+const assertError = require('./lib/errorAssertion');
 
 describe('getAllAvailableMeetingRooms', () => {
   it('should return empty when there are no room for booking', () => {
@@ -9,7 +11,7 @@ describe('getAllAvailableMeetingRooms', () => {
     const timeSlot = TimeSlot.create('10:00', '12:00');
     const availableRooms = bookingManager.getAllAvailableMeetingRooms(timeSlot);
 
-    expect(availableRooms).toStrictEqual([]);
+    assert.deepEqual(availableRooms, []);
   });
 
   it("should return c-cave, d-tower rooms when there are all rooms available for given time slot", () => {
@@ -20,7 +22,7 @@ describe('getAllAvailableMeetingRooms', () => {
     const timeSlot = TimeSlot.create("10:00", "12:00");
     const availableRooms = bookingManager.getAllAvailableMeetingRooms(timeSlot);
 
-    expect(availableRooms).toStrictEqual([caveRoom, towerRoom]);
+    assert.deepEqual(availableRooms, [caveRoom, towerRoom]);
   });
 
   it("should return c-cave room when d-tower room is already booked for given slot", () => {
@@ -33,7 +35,7 @@ describe('getAllAvailableMeetingRooms', () => {
 
     const availableRooms = bookingManager.getAllAvailableMeetingRooms(timeSlot);
 
-    expect(availableRooms).toStrictEqual([caveRoom]);
+    assert.deepEqual(availableRooms, [caveRoom]);
   });
 
   it('should throw noMeetingRoomAvailableError when given time slot is overlapping with cleaning time slot', () => {
@@ -51,7 +53,7 @@ describe('getAllAvailableMeetingRooms', () => {
 
     const error = () => bookingManager.getAllAvailableMeetingRooms(timeSlot, 2);
 
-    expect(error).toThrow(NoMeetingRoomAvailableError);
+    assertError(error, NoMeetingRoomAvailableError, "NO_VACANT_ROOM");
   })
 
 
@@ -67,7 +69,7 @@ describe('bookAMeetingRoom', () => {
 
     const meetingRoom = bookingManager.bookAMeetingRoom(timeSlot, 2);
 
-    expect(meetingRoom).toStrictEqual(caveRoom);
+    assert.deepEqual(meetingRoom, caveRoom);
   });
 
   it("should return d-tower when asked for book a room when give headsCount is more than cave room capacity", () => {
@@ -78,7 +80,7 @@ describe('bookAMeetingRoom', () => {
 
     const meetingRoom = bookingManager.bookAMeetingRoom(timeSlot, 4);
 
-    expect(meetingRoom).toStrictEqual(towerRoom);
+    assert.deepEqual(meetingRoom, towerRoom);
   });
 
   it("should throw noMeetingRoomAvailableError when no meeting room is available for given time slot", () => {
@@ -90,7 +92,7 @@ describe('bookAMeetingRoom', () => {
 
     const error = () =>  bookingManager.bookAMeetingRoom(timeSlot, 3);
 
-    expect(error).toThrow(NoMeetingRoomAvailableError);
+    assertError(error, NoMeetingRoomAvailableError, "NO_VACANT_ROOM");
   });
 
   it("should return d-tower when there are three rooms with c-cave status as booked and d-tower has most least capacity require for booking a new room", () => {
@@ -104,7 +106,7 @@ describe('bookAMeetingRoom', () => {
 
     const meetingRoom = bookingManager.bookAMeetingRoom(timeSlot, 3);
 
-    expect(meetingRoom).toStrictEqual(towerRoom);
+    assert.deepEqual(meetingRoom, towerRoom);
   });
 
   it("should throw noMeetingRoomAvailableError try to book a room whose time slot is overlapping with timing for cleaning rooms", () => {
@@ -119,7 +121,7 @@ describe('bookAMeetingRoom', () => {
 
     const error = () => bookingManager.bookAMeetingRoom(timeSlot, 2);
 
-    expect(error).toThrow(NoMeetingRoomAvailableError);
+    assertError(error, NoMeetingRoomAvailableError, "NO_VACANT_ROOM");
   });
 
 
