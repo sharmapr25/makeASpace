@@ -18,28 +18,72 @@ describe('create', () => {
   });
 
 });
+
 describe('isGreaterThan', () => {
   it('should return true when 23 hr and 00 m is greater than 12hr and 12m', () => {
-    const twentyThreeHoursTime = Time.create('23:00');
-    const twelveHoursTime = Time.create('12:12');
+    const twentyThreeHours = Time.create('23:00');
+    const twelveHoursAndTweleveMinutes = Time.create('12:12');
 
-    const result = twentyThreeHoursTime.isGreaterThan(twelveHoursTime);
+    const result = twentyThreeHours.isGreaterThan(twelveHoursAndTweleveMinutes);
     expect(result).toBeTruthy();
   });
 
-  it("should return false when 20 hr and 00 m is not greater than 23hr and 00m", () => {
-    const twentyThreeHoursTime = Time.create("23:00");
-    const twentyHoursTime = Time.create("20:00");
+  it("should return false when 16 hr and 21 m is not greater than 17hr and 20m", () => {
+    const seventyHoursAndTwentyMinutes = Time.create("17:20");
+    const sixteenHoursAndTwentyOneMinutes = Time.create("16:21");
 
-    const result = twentyHoursTime.isGreaterThan(twentyThreeHoursTime);
+    const result = sixteenHoursAndTwentyOneMinutes.isGreaterThan(seventyHoursAndTwentyMinutes);
     expect(result).toBeFalsy();
   });
 
   it("should return false when 23 hr and 00 m is not greater than 23hr and 01m", () => {
-    const twentyThreeHoursAndOneSecondTime = Time.create("23:01");
-    const twentyThreeHoursTime = Time.create("20:00");
+    const twentyThreeHoursAndOneSecond = Time.create("23:01");
+    const twentyThreeHours = Time.create("20:00");
 
-    const result = twentyThreeHoursTime.isGreaterThan(twentyThreeHoursAndOneSecondTime);
+    const result = twentyThreeHours.isGreaterThan(twentyThreeHoursAndOneSecond);
     expect(result).toBeFalsy();
   });
+});
+
+describe('isLessThan', () => {
+  it("should return true when 12hr and 12m is less than 23hr and 00m", () => {
+    const twelveHours = Time.create("12:12");
+    const twentyThreeHours = Time.create("23:00");
+
+    const result = twelveHours.isLessThan(twentyThreeHours);
+    expect(result).toBeTruthy();
+  });
+
+  it("should return false when 17 hr and 20 m is not less than 16hr and 21m", () => {
+    const seventyHoursAndTwentyMinutes = Time.create("17:20");
+    const sixteenHoursAndTwentyOneMinutes = Time.create("16:21");
+
+    const result = seventyHoursAndTwentyMinutes.isLessThan(sixteenHoursAndTwentyOneMinutes);
+    expect(result).toBeFalsy();
+  });
+
+  it("should return false when 23 hr and 01 m is not less than 23hr and 00m", () => {
+    const twentyThreeHours = Time.create("23:00");
+    const twentyThreeHoursAndOneSecond = Time.create("23:01");
+
+    const result = twentyThreeHoursAndOneSecond.isLessThan(twentyThreeHours);
+    expect(result).toBeFalsy();
+  });
+});
+
+describe('isSame', () => {
+  it('should return true when given two time slots are same', () => {
+    const twentyThreeHours = Time.create("20:00");
+    const result = twentyThreeHours.isSame(twentyThreeHours);
+    expect(result).toBeTruthy();
+  });
+
+  it("should return false when given two time slots are not same", () => {
+    const twentyThreeHours = Time.create("23:00");
+    const twentyThreeHoursAndOneSecond = Time.create("23:01");
+
+    const result = twentyThreeHours.isSame(twentyThreeHoursAndOneSecond);
+    expect(result).toBeFalsy();
+  });
+
 });
