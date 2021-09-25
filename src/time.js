@@ -14,7 +14,7 @@ class Time {
 
   static create(timeInput) {
     const [hours, minutes] = timeInput.split(COLON_DELIMITER).map(input => parseInt(input));
-    if (hours == 24 && minutes) {
+    if (hours > 23 || minutes > 60) {
       throw new InvalidTimeInputError();
     }
     return new Time(hours, minutes);
