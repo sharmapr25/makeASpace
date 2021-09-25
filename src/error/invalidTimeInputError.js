@@ -1,0 +1,3 @@
+class InvalidTimeInputError extends Error{
+
+}
