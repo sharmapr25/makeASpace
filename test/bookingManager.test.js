@@ -1,6 +1,7 @@
 const BookingManager = require("../src/bookingManager");
 const TimeSlot = require("../src/timeSlot");
 const MeetingRoom = require('../src/meetingRoom');
+const NoMeetingRoomAvailableError = require("../src/error/noMeetingRoomAvailableError");
 
 describe('getAllAvailableMeetingRooms', () => {
   it('should return empty when there are no room for booking', () => {
@@ -33,6 +34,44 @@ describe('getAllAvailableMeetingRooms', () => {
     const availableRooms = bookingManager.getAllAvailableMeetingRooms(timeSlot);
 
     expect(availableRooms).toStrictEqual([caveRoom]);
+  });
+
+});
+
+
+describe('bookAMeetingRoom', () => {
+  it('should return c-cave when asked for book a room with given timeslot and heads count of 2', () => {
+    const caveRoom = new MeetingRoom("C-Cave", 3);
+    const towerRoom = new MeetingRoom("D-Tower", 7);
+    const timeSlot = TimeSlot.create("10:00", "12:00");
+    const bookingManager = new BookingManager([caveRoom, towerRoom]);
+
+    const meetingRoom = bookingManager.bookAMeetingRoom(timeSlot, 2);
+
+    expect(meetingRoom).toStrictEqual(caveRoom);
+  })
+
+  it("should return d-tower when asked for book a room when give headsCount is more than cave room capacity", () => {
+    const caveRoom = new MeetingRoom("C-Cave", 3);
+    const towerRoom = new MeetingRoom("D-Tower", 7);
+    const timeSlot = TimeSlot.create("10:00", "12:00");
+    const bookingManager = new BookingManager([caveRoom, towerRoom]);
+
+    const meetingRoom = bookingManager.bookAMeetingRoom(timeSlot, 4);
+
+    expect(meetingRoom).toStrictEqual(towerRoom);
+  });
+
+  it("should throw noMeetingRoomAvailable error when no meeting room is available for given time slot", () => {
+    const caveRoom = new MeetingRoom("C-Cave", 3);
+    const timeSlot = TimeSlot.create("10:00", "12:00");
+    const bookingManager = new BookingManager([caveRoom]);
+
+    caveRoom.book(timeSlot);
+
+    const error = () =>  bookingManager.bookAMeetingRoom(timeSlot, 3);
+
+    expect(error).toThrow(NoMeetingRoomAvailableError);
   });
 
 });
