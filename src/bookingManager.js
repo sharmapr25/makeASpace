@@ -1,10 +1,10 @@
 class BookingManager {
-  constructor(rooms = []){
-    this._rooms = rooms;
+  constructor(meetingRooms = []){
+    this._meetingRooms = meetingRooms;
   }
 
   getAllAvailableMeetingRooms(timeSlot){
-    return this._rooms;
+    return this._meetingRooms.filter(meetingRoom => meetingRoom.isAvailableFor(timeSlot));
   }
 }
 
