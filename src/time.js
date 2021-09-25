@@ -25,7 +25,6 @@ class Time {
   }
 
   isSame(anotherTime){
-    console.log('at lest coming here');
     return this._hours === anotherTime._hours && this._minutes === anotherTime._minutes;
   }
 
