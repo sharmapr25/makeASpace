@@ -36,6 +36,25 @@ describe('getAllAvailableMeetingRooms', () => {
     expect(availableRooms).toStrictEqual([caveRoom]);
   });
 
+  it('should throw noMeetingRoomAvailableError when given time slot is overlapping with cleaning time slot', () => {
+    const caveRoom = new MeetingRoom("C-Cave", 3);
+    const towerRoom = new MeetingRoom("D-Tower", 7);
+    const cleaningRoomTimeSlots = [
+      TimeSlot.create("9:00", "09:15"),
+      TimeSlot.create("18:45", "19:00"),
+    ];
+    const bookingManager = new BookingManager(
+      [caveRoom, towerRoom],
+      cleaningRoomTimeSlots
+    );
+    const timeSlot = TimeSlot.create("18:00", "19:00");
+
+    const error = () => bookingManager.getAllAvailableMeetingRooms(timeSlot, 2);
+
+    expect(error).toThrow(NoMeetingRoomAvailableError);
+  })
+
+
 });
 
 
@@ -91,9 +110,12 @@ describe('bookAMeetingRoom', () => {
   it("should throw noMeetingRoomAvailableError try to book a room whose time slot is overlapping with timing for cleaning rooms", () => {
     const caveRoom = new MeetingRoom("C-Cave", 3);
     const towerRoom = new MeetingRoom("D-Tower", 7);
-    const cleaningRoomTimeSlots = [TimeSlot.create("9:00", "9:15")]
+    const cleaningRoomTimeSlots = [
+      TimeSlot.create("9:00", "09:15"),
+      TimeSlot.create("18:45", "19:00"),
+    ];
     const bookingManager = new BookingManager([caveRoom, towerRoom], cleaningRoomTimeSlots);
-    const timeSlot = TimeSlot.create("9:00", "12:00");
+    const timeSlot = TimeSlot.create("18:00", "19:00");
 
     const error = () => bookingManager.bookAMeetingRoom(timeSlot, 2);
 

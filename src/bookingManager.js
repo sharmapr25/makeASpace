@@ -12,20 +12,19 @@ class BookingManager {
     return this._cleaningRoomTimeSlots.find(slot => slot.isOverlappingWith(timeSlot));
   }
 
-  getAllAvailableMeetingRooms(timeSlot) {
+  getAllAvailableMeetingRooms(timeSlot, headsCount=0) {
+    if (this._isOverlappingWithBufferTime(timeSlot)) {
+      throw new NoMeetingRoomAvailableError();
+    }
+
     return this._meetingRooms.filter((meetingRoom) =>
+      meetingRoom.hasCapacityOf(headsCount) &&
       meetingRoom.isAvailableFor(timeSlot)
     );
   }
 
   bookAMeetingRoom(timeSlot, headsCount) {
-    if(this._isOverlappingWithBufferTime(timeSlot)){
-      throw new NoMeetingRoomAvailableError();
-    }
-
-    const meetingRoom = this._meetingRooms.find((meetingRoom) =>
-      meetingRoom.hasCapacityOf(headsCount) && meetingRoom.isAvailableFor(timeSlot));
-
+    const meetingRoom = this.getAllAvailableMeetingRooms(timeSlot, headsCount)[0] || null;
     if (!meetingRoom) {
       throw new NoMeetingRoomAvailableError();
     }
