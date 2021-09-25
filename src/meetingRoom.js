@@ -1,3 +1,5 @@
+const MeetingRoomIsAlreadyBookedError = require("./error/meetingRoomIsAlreadyBookedError");
+
 class MeetingRoom{
   constructor(name, capacity){
     this._name = name;
@@ -6,6 +8,9 @@ class MeetingRoom{
   }
 
   book(timeSlot){
+    if(!this.isAvailableFor(timeSlot)){
+      throw new MeetingRoomIsAlreadyBookedError();
+    }
     this._bookedSlots.push(timeSlot);
   }
 
