@@ -1,3 +1,4 @@
 const InvalidTimeInputError = require('./invalidTimeInputError');
+const InvalidTimeSlotInputError = require("./invalidTimeSlotInputError");
 
-module.exports = [InvalidTimeInputError];
+module.exports = [InvalidTimeInputError, InvalidTimeSlotInputError];
