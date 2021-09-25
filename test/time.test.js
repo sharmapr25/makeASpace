@@ -71,10 +71,10 @@ describe('isLessThan', () => {
   });
 });
 
-describe('isSame', () => {
+describe('equals', () => {
   it('should return true when given two time slots are same', () => {
     const twentyThreeHours = Time.create("20:00");
-    const result = twentyThreeHours.isSame(twentyThreeHours);
+    const result = twentyThreeHours.equals(twentyThreeHours);
     expect(result).toBeTruthy();
   });
 
@@ -82,7 +82,7 @@ describe('isSame', () => {
     const twentyThreeHours = Time.create("23:00");
     const twentyThreeHoursAndOneSecond = Time.create("23:01");
 
-    const result = twentyThreeHours.isSame(twentyThreeHoursAndOneSecond);
+    const result = twentyThreeHours.equals(twentyThreeHoursAndOneSecond);
     expect(result).toBeFalsy();
   });
 

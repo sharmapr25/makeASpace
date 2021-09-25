@@ -24,7 +24,7 @@ class Time {
     );
   }
 
-  isSame(anotherTime) {
+  equals(anotherTime) {
     return (
       this._hours === anotherTime._hours &&
       this._minutes === anotherTime._minutes

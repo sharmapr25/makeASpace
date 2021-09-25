@@ -24,7 +24,7 @@ class TimeSlot {
   isOverlappingWith(anotherTimeSlot) {
     return (
       this._isOverlappingWithStartDate(anotherTimeSlot) ||
-      this._isOverlappingWithEndDate(anotherTimeSlot) || anotherTimeSlot._startDate.isSame(this._startDate)
+      this._isOverlappingWithEndDate(anotherTimeSlot) || anotherTimeSlot._startDate.equals(this._startDate)
     );
   }
 
