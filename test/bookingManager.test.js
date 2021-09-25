@@ -34,4 +34,5 @@ describe('getAllAvailableMeetingRooms', () => {
 
     expect(availableRooms).toStrictEqual([caveRoom]);
   });
+
 });

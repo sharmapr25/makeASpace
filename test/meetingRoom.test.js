@@ -63,3 +63,23 @@ describe('book', () => {
   });
 
 });
+
+describe('hasCapacity', () => {
+  it('should return true when given heads count is same as room capacity', () => {
+    const caveRoom = new MeetingRoom("C-Cave", 2);
+
+    expect(caveRoom.hasCapacityOf(2)).toBeTruthy();
+  })
+
+  it("should return true when given heads count is less than room capacity", () => {
+    const caveRoom = new MeetingRoom("C-Cave", 2);
+
+    expect(caveRoom.hasCapacityOf(1)).toBeTruthy();
+  });
+
+   it("should return false when given heads count is more than room capacity", () => {
+     const caveRoom = new MeetingRoom("C-Cave", 2);
+
+     expect(caveRoom.hasCapacityOf(4)).toBeFalsy();
+   });
+});
