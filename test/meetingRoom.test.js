@@ -69,7 +69,7 @@ describe('hasCapacity', () => {
     const caveRoom = new MeetingRoom("C-Cave", 2);
 
     expect(caveRoom.hasCapacityOf(2)).toBeTruthy();
-  })
+  });
 
   it("should return true when given heads count is less than room capacity", () => {
     const caveRoom = new MeetingRoom("C-Cave", 2);
@@ -77,9 +77,25 @@ describe('hasCapacity', () => {
     expect(caveRoom.hasCapacityOf(1)).toBeTruthy();
   });
 
-   it("should return false when given heads count is more than room capacity", () => {
-     const caveRoom = new MeetingRoom("C-Cave", 2);
+  it("should return false when given heads count is more than room capacity", () => {
+    const caveRoom = new MeetingRoom("C-Cave", 2);
 
-     expect(caveRoom.hasCapacityOf(4)).toBeFalsy();
-   });
+    expect(caveRoom.hasCapacityOf(4)).toBeFalsy();
+  });
+});
+
+describe("getCapacityDifference", () => {
+  it('should return 5 when there are space differecne between give two rooms', () => {
+    const caveRoom = new MeetingRoom("C-Cave", 2);
+    const towerRoom = new MeetingRoom("D-Tower", 7);
+
+    expect(towerRoom.getCapacityDifference(caveRoom)).toBe(5);
+  });
+
+  it("should return 0 when there are no space differecne between give two rooms", () => {
+    const caveRoom = new MeetingRoom("C-Cave", 2);
+    const anotherCaveRoom = new MeetingRoom("D-Cave", 2);
+
+    expect(caveRoom.getCapacityDifference(anotherCaveRoom)).toBe(0);
+  });
 });

@@ -20,8 +20,12 @@ class MeetingRoom {
     );
   }
 
-  hasCapacityOf(headsCount){
+  hasCapacityOf(headsCount) {
     return this._capacity >= headsCount;
+  }
+
+  getCapacityDifference(anotherMeetingRoom){
+    return this._capacity - anotherMeetingRoom._capacity;
   }
 }
 

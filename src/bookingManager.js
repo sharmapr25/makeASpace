@@ -2,7 +2,7 @@ const NoMeetingRoomAvailableError = require("./error/noMeetingRoomAvailableError
 
 class BookingManager {
   constructor(meetingRooms = []) {
-    this._meetingRooms = meetingRooms;
+    this._meetingRooms = meetingRooms.sort((meetingRoom, anotherMeetingRoom) => meetingRoom.getCapacityDifference(anotherMeetingRoom));
   }
 
   getAllAvailableMeetingRooms(timeSlot) {

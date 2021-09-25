@@ -74,4 +74,18 @@ describe('bookAMeetingRoom', () => {
     expect(error).toThrow(NoMeetingRoomAvailableError);
   });
 
+  it("should return d-tower when there are three rooms with c-cave status as booked and d-tower has most least capacity require for booking a new room", () => {
+    const caveRoom = new MeetingRoom("C-Cave", 3);
+    const mansionRoom = new MeetingRoom("G-Mansion", 20);
+    const towerRoom = new MeetingRoom("D-Tower", 7);
+    const timeSlot = TimeSlot.create("10:00", "12:00");
+    const bookingManager = new BookingManager([caveRoom, mansionRoom, towerRoom]);
+
+    bookingManager.bookAMeetingRoom(timeSlot, 3);
+
+    const meetingRoom = bookingManager.bookAMeetingRoom(timeSlot, 3);
+
+    expect(meetingRoom).toStrictEqual(towerRoom);
+  });
+
 });
