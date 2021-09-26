@@ -72,3 +72,6 @@ Or
 ```
 npm run test -- --coverage --watchAll=false
 ```
+
+# code coverage
+![](./coverage.png)
