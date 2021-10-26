@@ -1,7 +1,7 @@
 # Introduction
 This is a problem assignment about making a space for coworker or individual. Where they can book a room based on given slot and capacity.
 
-# Setup
+# Default Setup
 By Default there are three rooms:
 Name | Person Capacity
 ------------ | -------------
