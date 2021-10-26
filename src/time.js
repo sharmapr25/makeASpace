@@ -3,7 +3,7 @@ const {InvalidTimeInputError} = require('./error/index.js') ;
 const COLON_DELIMITER = ":";
 
 class Time {
-  constructor(hours, minutes = 0) {
+  constructor(hours, minutes) {
     this._hours = hours;
     this._minutes = minutes;
   }
